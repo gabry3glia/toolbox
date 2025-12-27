@@ -147,7 +147,8 @@ public abstract class Sketch {
 			jFrame.dispatchEvent(new WindowEvent(jFrame, WindowEvent.WINDOW_CLOSING));
         } catch (Exception e) {
 			running = false;
-            Console.error("Your sketch crashed and produced the following report:\n%s", e.getStackTrace());
+            Console.error("Your sketch crashed and produced the following report:");
+			e.printStackTrace();
             System.exit(1);
         }
     }
@@ -200,6 +201,14 @@ public abstract class Sketch {
 	public void setFrameRate(int frameRate) {
 		this.frameRate = frameRate;
 	}
+	
+	/**
+     * Toggles automatic screen refresh (prevering frame accumulation), which is true by default
+     * The screen will be cleared using the background color
+    **/
+    public void autoClear(boolean toggle) {
+        autoClear = toggle;
+    }
 
     // GETTERS
     public int getWindowWidth() {
@@ -228,14 +237,4 @@ public abstract class Sketch {
 	public int getTime() {
 		return time;
 	}
-
-	// SETTERS
-	
-	/**
-     * Toggles automatic screen refresh (prevering frame accumulation), which is true by default
-     * The screen will be cleared using the background color
-    **/
-    public void autoClear(boolean toggle) {
-        autoClear = toggle;
-    }
 }
