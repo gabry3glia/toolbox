@@ -57,7 +57,16 @@ If auto-clear is enabled, `screen.clear()` will be called between `update()` and
 
 An additional method called `windowSetup()` exists, but it is not mandatory to override and implement it. It is called once before the actual window (JFrame) is shown, meaning you can use it to add AWT components to the sketch window for more advanced UI creations.
 
-You can find a sketch template [**here**](https://github.com/G3Dev-0/toolbox/blob/main/Template.java) and an example sketch that also implements a more complex UI [**here**](https://github.com/G3Dev-0/toolbox/blob/main/Fireplace.java).
+You can find a sketch template [**here**](https://github.com/G3Dev-0/toolbox/blob/main/Template.java).
+
+## Code Examples: Fireplace
+An example sketch ([Fireplace.java](https://github.com/G3Dev-0/toolbox/blob/main/Fireplace.java)) has been provided in the repository.\
+It implements a more complex UI as well as some cellular automata features along with some randomness in order to create a pleasant flame effect.\
+There is a grid where each cell has a temperature value that gets changed depending on the values below it. Each cell is rendered as a pixel with a color that depends on that cell temperature.\
+It works by setting the base pixels all to the same temperature and then fading it as you go up along the vertical axis of the grid.\
+Every time we go up by a cell we take the temperature value from a cell below that can be either right beneath the current cell or to the left/right of it, depending on the value assigned to the parameter called "Horizontal motion", then we decrease the taken temperature by a random amount (dependin on the "Dimming factor") and finally assign the result to the current cell.
+
+<img src="fireplace.png" title="Fireplace" width="700"/>
 
 ## To-Do [#](#table-of-contents)
 + Improve sounds implementation
