@@ -43,7 +43,7 @@ You can draw in the canvas thanks to the `screen` component.
 
 The engine uses a right-handed y-up 2D coordinate system, meaning (0, 0) is the bottom left corner of the canvas, while the top right corner is at (`screen.getWidth() - 1`, `screen.getHeight() - 1`).
 
-The screen module holds some methods for drawing single pixels, points, lines, rectangles, squares, triangles, vectors and much more!\
+The screen module holds some methods for drawing single pixels, points, lines, rectangles, squares, triangles, vectors and much more!
 ### Pixels, Lines and Shapes
 + `void setPixel(int x, int y, Color color)`: sets the given pixel color
 + `void point(int x, int y, int radius, Color color)`: draws a point at the given coordinates and with the specified color (not affected by shape filling and shape outline)
