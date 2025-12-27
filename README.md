@@ -15,7 +15,7 @@ The sketch can be customized in many ways:
 + `void autoClear(boolean toggle)`: toggles the automatic screen clearing (if set to `false` you'll see the classic "Windows XP dragging" effect).
 
 The sketch window can be further customized by changing its title, size and the canvas pixel scale (the amount of actual screen pixels per canvas pixel).\
-These parameters can only be set at the beginning of the sketch when instantiating it, therefore you can set them by providing their values as the canvas creation method parameters in `void createCanvas(String title, int width, int height, int pixelScale)`.
+These parameters can only be set at the beginning of the sketch when instantiating it, therefore you can set them by providing their values as the canvas creation method parameters in `void createCanvas(String title, int width, int height, int pixelScale, Color backgroundColor)`.
 
 ## Input [#](#table-of-contents)
 This toolbox comes in with easy to use input methods:
