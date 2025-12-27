@@ -39,4 +39,17 @@ public class Maths {
         float t = (value - a) / (b - a); // percentage
         return (int) (start + (end - start) * t);
     }
+
+    /** Returns an integer array populated with ints from start (included) to end (excluded)
+     * The difference between two contiguous elements will always be step **/
+    public static int[] range(int start, int end, int step) {
+        int i = 0, n;
+        int[] result = new int[(end + 1 - start) / step];
+        for (n = start; n < end; n += step) {
+            // if (n >= end) break;
+            result[i] = n;
+            i++;
+        }
+        return result;
+    }
 }

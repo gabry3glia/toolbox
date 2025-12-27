@@ -42,7 +42,6 @@ public class Screen {
         this.width = width;
         this.height = height;
         pixels = new int[width * height];
-        clear(Color.TRANSPARENT);
 
         resetTranslation();
         resetPadding();
@@ -50,14 +49,40 @@ public class Screen {
 
     // BASIC FUNCTIONS
 
+    // The void setPixel() method should be the only channel through which
+    // the communication between the outside world and the raster happens.
+    // This means that if you want to edit a pixel you could always call this method
+    // and never use direct raster int array editing via `pixel[index] = hexARGBcolor;`
+    // void setPixel() should always be the only method that contains this line: `pixel[index] = hexARGBcolor;`
+
     /** Sets the pixel at the given coordinates to the given color (does not take translation into account) **/
     public void setPixel(int x, int y, Color color) {
-        if (color.getAlpha() == 0) return;
-        // flip y to make the coordinate system a y-up one
-        y = height - 1 - y;
-
+        if (color == null || color.getAlpha() == 0) return;
+        
         if (isOutside(x, y)) return;
-        pixels[x + y * width] = color.toInt();
+        // pixels[x + y * width] = color.toInt();
+
+        int[] oldChannels = Color.getChannelsFromInt(pixels[x + y * width]);
+        
+        // unpack
+        int oldR = oldChannels[0];
+        int oldG = oldChannels[1];
+        int oldB = oldChannels[2];
+
+        float alpha = color.getAlpha() / 255.0f;
+        float invAlpha = 1.0f - alpha;
+
+        // color blending (Linear Interpolation)
+        int r = (int) (color.getRed() * alpha + oldR * invAlpha);
+        int g = (int) (color.getGreen() * alpha + oldG * invAlpha);
+        int b = (int) (color.getBlue() * alpha + oldB * invAlpha);
+        
+        // pack color back again (alpha is kept at 255 to have an opaque screen)
+        pixels[x + y * width] = Color.toInt(r, g, b, 255);
+    }
+
+    public void setPixel(int i, Color color) {
+        setPixel(i % getWidth(), i / getWidth(), color);
     }
 
     /** Returns the color of the pixel at the given coordinates (does not take translation into account) **/
@@ -74,13 +99,40 @@ public class Screen {
     /** Clears the screen to the given color **/
     public void clear(Color color) {
         for (int i = 0; i < pixels.length; i++) {
-            pixels[i] = color.toInt();
+            setPixel(i, color);
         }
     }
 
     /** Clears the screen to the set background color **/
     public void clear() {
         clear(backgroundColor);
+    }
+
+    /**
+     * Clears the screen by drawing a semi-transparent veil over it with the specified alpha
+     * @param color the color of the clearing
+     * @param alpha the transparency of the veil ranged [0, 255], the higher it is the faster the frame buffer gets cleared
+     */
+    public void fadeClear(Color color, int alpha) {
+        Color fadeColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+        
+        // save the shape drawer options
+        boolean wasFillEnabled = fillEnabled;
+        boolean wasOutlinesEnabled = outlinesEnabled;
+        
+        fill(fadeColor);
+        disableOutlines();
+        
+        // draw the transparent veil
+        rectangle(getLeft(), getBottom(), getRight() + 1, getTop() + 1);
+        
+        // reset the shape drawer options
+        fillEnabled = wasFillEnabled;
+        outlinesEnabled = wasOutlinesEnabled;
+    }
+
+    public void fadeClear(int alpha) {
+        fadeClear(backgroundColor, alpha);
     }
 
     // SETTERS
@@ -133,6 +185,9 @@ public class Screen {
         right = left + width - 1;
         top = -ty;
         bottom = top + height - 1;
+        
+        // bottom = -ty;
+        // top = bottom + height - 1;
     }
 
     /** Sets the translation vector back to (getCenterX(), getCenterY()) **/

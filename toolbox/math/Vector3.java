@@ -136,6 +136,71 @@ public class Vector3 {
         this.z = xyz;
     }
 
+    /** Muliplies this vector components by the corresponding scaling vector components **/
+    public void multiply(Vector3 scalingVector) {
+        this.x *= scalingVector.x;
+        this.y *= scalingVector.y;
+        this.z *= scalingVector.z;
+    }
+
+    /** Rotates the given vector by the given degree euler angles (pitch, yaw, roll)
+    then returns the rotated vector **/
+    public void rotate3D(float[] eulerAngles) {
+        double x = this.x;
+        double y = this.y;
+        double z = this.z;
+
+        double rx = 0;
+        double ry = 0;
+        double rz = 0;
+
+        int i = 2;
+        // rotate around all the three axes
+        for (i = 2; i >= 0; i--) {
+        // for (i = 0; i < 3; i++) {
+            double theta = Math.toRadians(eulerAngles[i]);
+            double cs = Math.cos(theta);
+            double sn = Math.sin(theta);
+            switch (i) {
+                // rotation == 0 is around the x axis
+                case 0:
+                    rx = 1*x + 0*y + 0*z;
+                    ry = 0*x + cs*y + sn*z;
+                    rz = 0*x + -sn*y + cs*z;
+                    break;
+                // rotation == 1 is around the y axis
+                case 1:
+                    rx = cs*x + 0*y + sn*z;
+                    ry = 0*x + 1*y + 0*z;
+                    rz = -sn*x + 0*y + cs*z;
+                    break;
+                // rotation == 2 is around the z axis
+                case 2:
+                    rx = cs*x + sn*y + 0*z;
+                    ry = -sn*x + cs*y + 0*z;
+                    rz = 0*x + 0*y + 1*z;
+                    break;
+                default:
+                    break;
+            }
+            // prepare for the next rotation
+            x = rx;
+            y = ry;
+            z = rz;
+        }
+
+        this.set((float) x, (float) y, (float) z);
+    }
+
+    public Vector3 copy() {
+        return new Vector3(x, y, z);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Vector3(%.2f, %.2f, %.2f)", x, y, z);
+    }
+
     // THE STATIC FUNCTIONS CREATE NEW VECTORS, THE METHODS CHANGE THE INSTANCE
 
     /** Returns the sum of the given vector **/

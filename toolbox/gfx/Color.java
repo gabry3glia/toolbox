@@ -5,7 +5,7 @@ import toolbox.math.Maths;
 public class Color {
 
     // COLOR CONSTANTS
-    public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+    // public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 
     public static final Color WHITE = new Color(255, 255, 255);
     public static final Color LIGHT_GRAY = new Color(200, 200, 200);
@@ -137,12 +137,26 @@ public class Color {
         );
     }
 
-    /** Takes an hexadecimal ARGB color (format 0xAARRGGBB) **/
+    /** Takes an r, g, b, a set of integers and returns the corresponding hexadecimal ARGB color (format 0xAARRGGBB) **/
+    public static int toInt(int r, int g, int b, int a) {
+        return b | (g << 8) | (r << 16) | (a << 24);
+    }
+
+    /** Takes an hexadecimal ARGB color (format 0xAARRGGBB) and returns a new Color object instance **/
     public static Color fromInt(int i) {
         int r = (i >>> 16) & 0xff;
         int g = (i >>> 8) & 0xff;
         int b = i & 0xff;
         int a = (i >>> 24) & 0xff;
         return new Color(r, g, b, a);
+    }
+
+    /** Takes an hexadecimal ARGB color (format 0xAARRGGBB) and returns the channels as an int array { r, g, b, a } **/
+    public static int[] getChannelsFromInt(int i) {
+        int r = (i >>> 16) & 0xff;
+        int g = (i >>> 8) & 0xff;
+        int b = i & 0xff;
+        int a = (i >>> 24) & 0xff;
+        return new int[] { r, g, b, a };
     }
 }

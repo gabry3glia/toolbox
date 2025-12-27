@@ -1,4 +1,5 @@
 import toolbox.Sketch;
+import toolbox.gfx.Color;
 
 public class Template extends Sketch {
 
@@ -18,6 +19,6 @@ public class Template extends Sketch {
     }
 
     public static void main(String[] args) {
-        new Template().createCanvas("Toolbox Sketch", 600, 600, 1);
+        new Template().createCanvas("Toolbox Sketch", 600, 600, 1, Color.WHITE);
     }
 }

@@ -455,6 +455,6 @@ public class Fireplace extends Sketch {
         boolean highResolution = false;
         if (args.length == 1) highResolution = args[0].strip().equals("-h");
         SIZE = 500 / (highResolution ? 1 : 10);
-        new Fireplace().createCanvas("Fireplace", SIZE, SIZE, highResolution ? 1 : 10);
+        new Fireplace().createCanvas("Fireplace", SIZE, SIZE, highResolution ? 1 : 10, Color.BLACK);
     }
 }

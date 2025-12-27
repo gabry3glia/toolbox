@@ -11,6 +11,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+import toolbox.gfx.Color;
 import toolbox.gfx.Screen;
 import toolbox.utils.Console;
 
@@ -51,8 +52,8 @@ public abstract class Sketch {
 	/** Called FRAME_RATE times per second after update() is called (you can draw only here because screen.clear() will be called right before this if screen automatic clear is enabled) */
     public abstract void render();
 
-    public void createCanvas(String title, int width, int height, int pixelScale) {
-        this.windowWidth = width * pixelScale;
+    public void createCanvas(String title, int width, int height, int pixelScale, Color backgroundColor) {
+		this.windowWidth = width * pixelScale;
         this.windowHeight = height * pixelScale;
         this.pixelScale = pixelScale;
 
@@ -61,9 +62,16 @@ public abstract class Sketch {
 
 		canvas = new Canvas();
 		canvas.setSize(windowWidth, windowHeight);
+		// perform the first actual canvas clearing
+		// (this affects the canvas background color)
+		// and prevents flashing frames at the beginning
+		canvas.setBackground(new java.awt.Color(
+			backgroundColor.getRed(),
+			backgroundColor.getGreen(),
+			backgroundColor.getBlue()
+		));
 		
 		jFrame = new JFrame(title);
-        jFrame.setSize(windowWidth, windowHeight);
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jFrame.setLayout(new BorderLayout());
 		jFrame.add(canvas, "Center");
@@ -73,12 +81,23 @@ public abstract class Sketch {
 
 		windowSetup();
 		
+		// make the canvas size be the specified one
+		// without taking the decoration bar (title, _, ⌷, x buttons) into account
 		jFrame.pack();
+		// center the JFrame in the computer display
 		jFrame.setLocationRelativeTo(null);
-		jFrame.setVisible(true);
 
 		// rendering "pipeline" initialization
 		screen = new Screen(width, height);
+		// prepare the screen for having the given background color
+		screen.background(backgroundColor);
+		// perform the first screen clearing
+		// (this won't affect the current canvas color,
+		// but only set the frame buffer base color to the background color
+		// meaning you will start drawing on a screen
+		// that has the requested background color)
+		screen.clear();
+
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
@@ -89,6 +108,10 @@ public abstract class Sketch {
 		canvas.addMouseMotionListener(input);
 		canvas.addMouseWheelListener(input);
 
+		// make the jFrame, therefore the canvas, visible only after setting all pixels
+		// to the desired first clear/background color, this prevents flashing frames at the sketch start
+		jFrame.setVisible(true);
+		
 		// starting sequence
 		running = true;
 		run();
@@ -181,8 +204,14 @@ public abstract class Sketch {
 
 		render();
 		
-		for (int i = 0; i < pixels.length; i++) {
-			pixels[i] = screen.getPixels()[i];
+		// perform the y-flip as the last thing before rendering the frame buffer
+		int index, verticallyFlippedIndex;
+		for (int y = 0; y < screen.getHeight(); y++) {
+			for (int x = 0; x < screen.getWidth(); x++) {
+				index = x + y * screen.getWidth();
+				verticallyFlippedIndex = x + (screen.getHeight() - y - 1) * screen.getWidth();
+				pixels[index] = screen.getPixels()[verticallyFlippedIndex];
+			}
 		}
 
 		g = bs.getDrawGraphics();
