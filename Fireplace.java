@@ -116,7 +116,7 @@ public class Fireplace extends Sketch {
                             break;
                         }
                         updatePercentage = Float.parseFloat(tokens[1]);
-                        updatePercentage = Maths.clamp(updatePercentage, 0, 1);
+                        updatePercentage = Maths.clampInt(updatePercentage, 0, 1);
                         feedbackLabel.setText("Set simulation latency to " + updatePercentage);
                         break;
                     case "temp":
@@ -156,7 +156,7 @@ public class Fireplace extends Sketch {
                             break;
                         }
                         redFactor = Float.parseFloat(tokens[1]);
-                        redFactor = Maths.clamp(redFactor, 0, 1);
+                        redFactor = Maths.clampInt(redFactor, 0, 1);
                         feedbackLabel.setText("Set red channel to " + redFactor);
                         break;
                     case "green":
@@ -166,7 +166,7 @@ public class Fireplace extends Sketch {
                             break;
                         }
                         greenFactor = Float.parseFloat(tokens[1]);
-                        greenFactor = Maths.clamp(greenFactor, 0, 1);
+                        greenFactor = Maths.clampInt(greenFactor, 0, 1);
                         feedbackLabel.setText("Set green channel to " + greenFactor);
                         break;
                     case "blue":
@@ -176,7 +176,7 @@ public class Fireplace extends Sketch {
                             break;
                         }
                         blueFactor = Float.parseFloat(tokens[1]);
-                        blueFactor = Maths.clamp(blueFactor, 0, 1);
+                        blueFactor = Maths.clampInt(blueFactor, 0, 1);
                         feedbackLabel.setText("Set blue channel to " + blueFactor);
                         break;
                     case "color":
@@ -186,11 +186,11 @@ public class Fireplace extends Sketch {
                             break;
                         }
                         redFactor = Float.parseFloat(tokens[1]);
-                        redFactor = Maths.clamp(redFactor, 0, 1);
+                        redFactor = Maths.clampInt(redFactor, 0, 1);
                         greenFactor = Float.parseFloat(tokens[2]);
-                        greenFactor = Maths.clamp(greenFactor, 0, 1);
+                        greenFactor = Maths.clampInt(greenFactor, 0, 1);
                         blueFactor = Float.parseFloat(tokens[3]);
-                        blueFactor = Maths.clamp(blueFactor, 0, 1);
+                        blueFactor = Maths.clampInt(blueFactor, 0, 1);
                         feedbackLabel.setText("Set color to (" + redFactor + ", " + greenFactor + ", " + blueFactor + ")");
                         break;
                     case "radius":
@@ -200,7 +200,7 @@ public class Fireplace extends Sketch {
                             break;
                         }
                         radius = Integer.parseInt(tokens[1]);
-                        radius = (int) Maths.clamp(radius, 0, SIZE);
+                        radius = Maths.clampInt(radius, 0, SIZE);
                         feedbackLabel.setText("Set flame brush radius to " + radius);
                         break;
                     case "paint":
@@ -210,7 +210,7 @@ public class Fireplace extends Sketch {
                             break;
                         }
                         paint = Integer.parseInt(tokens[1]);
-                        paint = (int) Maths.clamp(paint, 0, maxTemperature);
+                        paint = Maths.clampInt(paint, 0, maxTemperature);
                         feedbackLabel.setText("Set flame brush paint to " + paint);
                         break;
                     case "reset":
@@ -378,8 +378,8 @@ public class Fireplace extends Sketch {
             for (y = -radius; y < radius; y++) {
                 for (x = -radius; x < radius; x++) {
                     if (x*x + y*y <= radius*radius) {
-                        xx = (int) Maths.clamp(x + pointerX, 0, SIZE - 1);
-                        yy = (int) Maths.clamp(y + pointerY, 0, SIZE - 1);
+                        xx = Maths.clampInt(x + pointerX, 0, SIZE - 1);
+                        yy = Maths.clampInt(y + pointerY, 0, SIZE - 1);
                         grid[yy][xx] = value;
                     }
                 }
@@ -417,7 +417,7 @@ public class Fireplace extends Sketch {
                     // offset the position of the sampling cell below
                     actualX = x + xOffset;
                     // clamp the xOffset to avoid going outside the grid
-                    actualX = (int) Maths.clamp(actualX, 0, SIZE - 1);
+                    actualX = Maths.clampInt(actualX, 0, SIZE - 1);
                     
                     // this number makes the flame go dimmer depending
                     // on the DIMMING_FACTOR constant
@@ -426,7 +426,7 @@ public class Fireplace extends Sketch {
                     // dim the flame value
                     value = grid[y - 1][actualX] - dimAmount;
                     // clamp the value to make it ranged [0, maxTemperature]
-                    value = Math.clamp(value, 0, maxTemperature);
+                    value = Maths.clampInt(value, 0, maxTemperature);
                 }
                 // set the flame cell value
                 grid[y][x] = value;

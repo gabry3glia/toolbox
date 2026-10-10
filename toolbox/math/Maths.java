@@ -28,6 +28,11 @@ public class Maths {
     public static float clamp(float value, float minimum, float maximum) {
         return min(max(minimum, value), maximum);
     }
+
+    /** Clamps the given integer value between the two given minimum and maximum values **/
+    public static int clampInt(float value, float minimum, float maximum) {
+        return (int) min(max(minimum, value), maximum);
+    }
     
     /** Linear interpolation from a to b with interpolation parameter t (ranged [0.0, 1.0]) **/
     public static float lerp(float a, float b, float t) {

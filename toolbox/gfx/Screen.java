@@ -1,5 +1,6 @@
 package toolbox.gfx;
 
+import toolbox.math.Maths;
 import toolbox.math.Vector2;
 import toolbox.math.Vector3;
 
@@ -396,8 +397,8 @@ public class Screen {
                 y1 = bottom;
             }
         } else {
-            x0 = Math.clamp(x0, left, right);
-            y0 = Math.clamp(y0, top, bottom);
+            x0 = Maths.clampInt(x0, left, right);
+            y0 = Maths.clampInt(y0, top, bottom);
             for (int yp = 0; yp < Math.abs(y1 - y0); yp++) {
                 point(x0, yp + (y0 < y1 ? y0 : y1 + 1), strokeWeight, color);
             }

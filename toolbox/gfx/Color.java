@@ -74,49 +74,49 @@ public class Color {
     }
 
     public void set(int r, int g, int b) {
-        this.r = Math.clamp(r, 0, 255);
-        this.g = Math.clamp(g, 0, 255);
-        this.b = Math.clamp(b, 0, 255);
+        this.r = Maths.clampInt(r, 0, 255);
+        this.g = Maths.clampInt(g, 0, 255);
+        this.b = Maths.clampInt(b, 0, 255);
     }
 
     public void setRed(int r) {
         this.r = r;
-        r = (int) Maths.clamp(r, 0, 255);
+        r = Maths.clampInt(r, 0, 255);
     }
 
     public void setGreen(int g) {
         this.g = g;
-        g = (int) Maths.clamp(g, 0, 255);
+        g = Maths.clampInt(g, 0, 255);
     }
 
     public void setBlue(int b) {
         this.b = b;
-        b = (int) Maths.clamp(b, 0, 255);
+        b = Maths.clampInt(b, 0, 255);
     }
 
     public void setAlpha(int a) {
         this.a = a;
-        a = (int) Maths.clamp(a, 0, 255);
+        a = Maths.clampInt(a, 0, 255);
     }
 
     public void changeRedBy(int amount) {
         r += amount;
-        r = (int) Maths.clamp(r, 0, 255);
+        r = Maths.clampInt(r, 0, 255);
     }
 
     public void changeGreenBy(int amount) {
         g += amount;
-        g = (int) Maths.clamp(g, 0, 255);
+        g = Maths.clampInt(g, 0, 255);
     }
 
     public void changeBlueBy(int amount) {
         b += amount;
-        b = (int) Maths.clamp(b, 0, 255);
+        b = Maths.clampInt(b, 0, 255);
     }
 
     public void changeAlphaBy(int amount) {
         a += amount;
-        a = (int) Maths.clamp(a, 0, 255);
+        a = Maths.clampInt(a, 0, 255);
     }
 
     /** Returns a factor percent darker version of this color (e.g.: factor = 0.5f means 50 % darker) **/
@@ -131,9 +131,9 @@ public class Color {
     /** Returns a factor percent brighter version of this color (e.g.: factor = 0.5f means 50 % brighter) **/
     public Color brighter(float factor) {
         return new Color(
-            (int) Maths.clamp(r * (1 + factor), 0, 255),
-            (int) Maths.clamp(g * (1 + factor), 0, 255),
-            (int) Maths.clamp(b * (1 + factor), 0, 255)
+            Maths.clampInt(r * (1 + factor), 0, 255),
+            Maths.clampInt(g * (1 + factor), 0, 255),
+            Maths.clampInt(b * (1 + factor), 0, 255)
         );
     }
 
